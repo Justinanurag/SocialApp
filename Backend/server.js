@@ -20,7 +20,6 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-
 app.use(
   cors({
     origin: process.env.FRONTEND_URL || "http://localhost:8080",
@@ -33,7 +32,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-
+app.get("/", (req, res) => {
+  res.send("🚀 Server is live and running...");
+});
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
@@ -54,7 +55,7 @@ const startServer = async () => {
   await connectDB();
 
   app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`🌐 Server is running on port ${PORT}`);
   });
 };
 startServer();
