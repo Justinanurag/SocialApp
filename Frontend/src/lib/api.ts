@@ -1,11 +1,7 @@
-/**
- * API Client for Social Network Backend
- * 
- * This utility provides functions to interact with the backend API.
- * All requests are automatically proxied to http://localhost:3000 via Vite proxy.
- */
 
-const API_BASE_URL = '/api';
+
+// const API_BASE_URL = '/api';
+const API_BASE_URL = 'https://social-backend-delta-eight.vercel.app/api';
 
 // Types
 export interface ApiResponse<T = any> {
