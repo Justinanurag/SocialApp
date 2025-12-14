@@ -1,13 +1,36 @@
 import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function Navbar() {
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
+  const handleLogout = async () => {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will be logged out of your account',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#6366f1',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Yes, logout',
+      cancelButtonText: 'Cancel',
+    });
+
+    if (result.isConfirmed) {
+      logout();
+      await Swal.fire({
+        icon: 'success',
+        title: 'Logged out!',
+        text: 'You have been successfully logged out.',
+        timer: 2000,
+        showConfirmButton: false,
+        toast: true,
+        position: 'top-end',
+      });
+      navigate('/login');
+    }
   };
 
   return (

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ImageIcon } from 'lucide-react';
+import Swal from 'sweetalert2';
 import { useAuth } from '@/contexts/AuthContext';
 import { postsAPI } from '@/lib/api';
 import { Post } from '@/lib/api';
@@ -51,9 +52,25 @@ export default function CreatePost({ onPostCreated, useMockData = false }: Creat
         onPostCreated(response.data.post);
         setText('');
         setImages([]);
+        await Swal.fire({
+          icon: 'success',
+          title: 'Posted!',
+          text: 'Your post has been shared successfully.',
+          timer: 2000,
+          showConfirmButton: false,
+          toast: true,
+          position: 'top-end',
+        });
       }
     } catch (err: any) {
-      setError(err.message || 'Failed to create post');
+      const errorMessage = err.message || 'Failed to create post';
+      setError(errorMessage);
+      await Swal.fire({
+        icon: 'error',
+        title: 'Post Failed',
+        text: errorMessage,
+        confirmButtonColor: '#6366f1',
+      });
     } finally {
       setLoading(false);
     }

@@ -50,13 +50,13 @@ export const mockUsers: User[] = [
   },
 ];
 
-// Mock images - using placeholder images from Unsplash
+// Mock images - using placeholder images from Picsum (more reliable)
 const mockImages = [
-  'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop',
-  'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop',
-  'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop',
-  'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=800&h=600&fit=crop',
-  'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=600&fit=crop',
+  'https://picsum.photos/800/600?random=1',
+  'https://picsum.photos/800/600?random=2',
+  'https://picsum.photos/800/600?random=3',
+  'https://picsum.photos/800/600?random=4',
+  'https://picsum.photos/800/600?random=5',
 ];
 
 // Mock posts

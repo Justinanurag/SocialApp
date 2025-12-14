@@ -32,11 +32,18 @@ export const createPost = async (req, res, next) => {
         }));
         imageUrls = await uploadMultipleToCloudinary(files, 'social-posts');
       } catch (uploadError) {
-        return res.status(500).json({
-          success: false,
-          message: 'Failed to upload images',
-          error: uploadError.message
-        });
+        console.error('Image upload error:', uploadError);
+        // If Cloudinary is not configured, allow post creation without images
+        if (uploadError.message && uploadError.message.includes('Cloudinary is not configured')) {
+          console.warn('Cloudinary not configured, creating post without images');
+          imageUrls = [];
+        } else {
+          return res.status(500).json({
+            success: false,
+            message: uploadError.message || 'Failed to upload images. Please check Cloudinary configuration.',
+            error: process.env.NODE_ENV === 'development' ? uploadError.message : undefined
+          });
+        }
       }
     }
 
@@ -171,11 +178,18 @@ export const updatePost = async (req, res, next) => {
         }));
         imageUrls = await uploadMultipleToCloudinary(files, 'social-posts');
       } catch (uploadError) {
-        return res.status(500).json({
-          success: false,
-          message: 'Failed to upload images',
-          error: uploadError.message
-        });
+        console.error('Image upload error:', uploadError);
+        // If Cloudinary is not configured, allow post update without images
+        if (uploadError.message && uploadError.message.includes('Cloudinary is not configured')) {
+          console.warn('Cloudinary not configured, updating post without new images');
+          imageUrls = [];
+        } else {
+          return res.status(500).json({
+            success: false,
+            message: uploadError.message || 'Failed to upload images. Please check Cloudinary configuration.',
+            error: process.env.NODE_ENV === 'development' ? uploadError.message : undefined
+          });
+        }
       }
     }
 

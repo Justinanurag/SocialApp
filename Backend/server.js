@@ -5,6 +5,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 import connectDB from "./DBConnection/DBConnection.js";
+import { errorHandler } from "./middleware/errorHandler.js";
 
 // Routes
 import authRoutes from "./routes/authRoutes.js";
@@ -48,6 +49,9 @@ app.get("/api/health", (req, res) => {
     message: "API is running",
   });
 });
+
+// Error handler middleware (must be last)
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 

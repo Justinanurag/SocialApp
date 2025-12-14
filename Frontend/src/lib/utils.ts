@@ -4,13 +4,19 @@
 
 /**
  * Get full URL for uploaded images
- * Since we're using Vite proxy, we can use relative URLs
+ * Handles both Cloudinary URLs and old /uploads/ paths
  */
 export const getImageUrl = (imagePath: string): string => {
   if (!imagePath) return '';
-  // If it's already a full URL, return as is
+  // If it's already a full URL (Cloudinary or other), return as is
   if (imagePath.startsWith('http')) return imagePath;
-  // Otherwise, use relative URL (proxy will handle it)
+  // If it's an old /uploads/ path, it won't work in production
+  // Return a placeholder or empty string
+  if (imagePath.startsWith('/uploads/')) {
+    // In production, these paths don't exist, so return a placeholder
+    return `https://picsum.photos/800/600?random=${Math.random()}`;
+  }
+  // Otherwise, use relative URL (proxy will handle it for local dev)
   return imagePath;
 };
 
