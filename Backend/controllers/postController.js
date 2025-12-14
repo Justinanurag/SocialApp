@@ -1,6 +1,7 @@
 import Post from '../models/Post.js';
 import User from '../models/User.js';
 import { validationResult } from 'express-validator';
+import { uploadMultipleToCloudinary } from '../utils/cloudinary.js';
 
 /**
  * @desc    Create a new post
@@ -20,12 +21,29 @@ export const createPost = async (req, res, next) => {
     }
 
     const { text } = req.body;
-    const images = req.files ? req.files.map(file => `/uploads/${file.filename}`) : [];
+    
+    // Upload images to Cloudinary if files are present
+    let imageUrls = [];
+    if (req.files && req.files.length > 0) {
+      try {
+        const files = req.files.map(file => ({
+          buffer: file.buffer,
+          mimetype: file.mimetype
+        }));
+        imageUrls = await uploadMultipleToCloudinary(files, 'social-posts');
+      } catch (uploadError) {
+        return res.status(500).json({
+          success: false,
+          message: 'Failed to upload images',
+          error: uploadError.message
+        });
+      }
+    }
 
     const post = await Post.create({
       user: req.user.id,
       text,
-      images
+      images: imageUrls
     });
 
     const populatedPost = await Post.findById(post._id)
@@ -142,13 +160,30 @@ export const updatePost = async (req, res, next) => {
     }
 
     const { text } = req.body;
-    const images = req.files ? req.files.map(file => `/uploads/${file.filename}`) : [];
+    
+    // Upload new images to Cloudinary if files are present
+    let imageUrls = [];
+    if (req.files && req.files.length > 0) {
+      try {
+        const files = req.files.map(file => ({
+          buffer: file.buffer,
+          mimetype: file.mimetype
+        }));
+        imageUrls = await uploadMultipleToCloudinary(files, 'social-posts');
+      } catch (uploadError) {
+        return res.status(500).json({
+          success: false,
+          message: 'Failed to upload images',
+          error: uploadError.message
+        });
+      }
+    }
 
     post = await Post.findByIdAndUpdate(
       req.params.id,
       {
         text,
-        ...(images.length > 0 && { images })
+        ...(imageUrls.length > 0 && { images: imageUrls })
       },
       {
         new: true,

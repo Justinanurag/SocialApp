@@ -22,7 +22,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:8080" ||" https://social-app-frontend-delta.vercel.app",
+    origin: process.env.FRONTEND_URL || "http://localhost:8080" ||"https://social-app-frontend-delta.vercel.app",
     credentials: true,
   })
 );

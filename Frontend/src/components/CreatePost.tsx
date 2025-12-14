@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ImageIcon } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { postsAPI } from '@/lib/api';
 import { Post } from '@/lib/api';
@@ -85,8 +86,8 @@ export default function CreatePost({ onPostCreated, useMockData = false }: Creat
             />
             <div className="mt-2 flex items-center justify-between">
               <div className="flex items-center space-x-4">
-                <label className="cursor-pointer text-gray-500 hover:text-blue-600 transition-colors">
-                  <span className="text-lg">📷</span>
+                <label className="cursor-pointer flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors">
+                  <ImageIcon className="w-5 h-5" />
                   <input
                     type="file"
                     multiple
@@ -95,7 +96,7 @@ export default function CreatePost({ onPostCreated, useMockData = false }: Creat
                     className="hidden"
                   />
                   {images.length > 0 && (
-                    <span className="ml-1 text-sm">({images.length})</span>
+                    <span className="text-sm font-medium">({images.length})</span>
                   )}
                 </label>
                 <span className="text-sm text-gray-400">
